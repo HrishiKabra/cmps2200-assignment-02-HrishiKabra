@@ -6,6 +6,7 @@ from collections import defaultdict
 import math
 
 #### Iterative solution
+
 def parens_match_iterative(mylist):
     """
     Implement the iterative solution to the parens matching problem.
@@ -23,6 +24,12 @@ def parens_match_iterative(mylist):
     False
     """
     ### TODO
+    def iterate(f, x, a):
+        if len(a) == 0:
+            return x
+        else:
+            return iterate(f, f(x, a[0]), a[1:])
+
     return iterate(parens_update, 0, mylist) == 0
     ###
 
@@ -40,12 +47,12 @@ def parens_update(current_output, next_input):
       the updated value of `current_output`
     """
     ###TODO
-    if current_output == -math.inf:  # in an invalid state; carry it forward
+    if current_output == -math.inf:  # if invalid state; carry it forward
         return current_output
     if next_input == '(':            # new open parens 
         return current_output + 1
     elif next_input == ')':          # new close parens
-        if current_output <= 0:      # close before an open -> invalid
+        if current_output <= 0:      # close before an open is invalid
             return -math.inf
         else:                        # valid
             return current_output - 1
@@ -58,6 +65,15 @@ def parens_update(current_output, next_input):
 
 
 #### Scan solution
+
+def plus(x, y):
+    return x + y
+
+def reduce(f, id_, seq):
+    out = id_
+    for x in seq:
+        out = f(out, x)
+    return out
 
 def parens_match_scan(mylist):
     """
@@ -159,6 +175,8 @@ def parens_match_dc_helper(mylist):
             return (1, 0) # one unmatched )    
         else:
             return (0, 0)
+
+
     i,j = parens_match_dc_helper(mylist[:len(mylist)//2])
     k,l = parens_match_dc_helper(mylist[len(mylist)//2:])
     # Combination:

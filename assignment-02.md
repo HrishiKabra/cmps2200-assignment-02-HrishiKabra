@@ -1,6 +1,6 @@
 # CMPS 2200 Assignment 2
 
-**Name:**_________________________
+**Name:** Hrishi Kabra
 
 In this assignment we'll work on applying the methods we've learned to analyze recurrences, and also see their behavior
 in practice. As with previous
@@ -15,95 +15,48 @@ and push to your github repository.
 Derive asymptotic upper bounds of work for each recurrence below.
 
 * $W(n)=2W(n/3)+1$
-.  
-.  
-. 
-.  
-. 
-.  
-. 
+
+    $O(n^{log_3(2)})$ - for each level - nodes split into 3 - two units of work are done - work decreases with each level therefore it is a root dominated function - hence work is the $\sum_{i=0}^{log_3(n)} 2^i$ which when summed together = $O(n^{log_3(2)})$
+
  
 * $W(n)=5W(n/4)+n$
-.  
-.
-.  
-. 
-.  
-. 
-.  
-.  
-. 
+
+    $O(n^{\log_4(5)})$ - this is a root-dominated case since $\log_4(5) \approx 1.16 > 1$ - for each level, the work is $5^i$ where $i$ is the level number, and there are $\log_4(n)$ levels - the total work is the sum $\sum_{i=0}^{\log_4(n)} 5^i \cdot (n/4^i)$ which simplifies to $O(n^{\log_4(5)})$ and dominates the $O(n)$ term
+
 
 * $W(n)=7W(n/7)+n$
-.  
-. 
-.  
-.  
-. 
-.  
-.
+
+    $O(n \log n)$ - this is a balanced case since $\log_7(7) = 1$ - for each level, the work is $n$ (the non-recursive term), and there are $\log_7(n)$ levels - the total work is $n \cdot \log_7(n) = O(n \log n)$
+
 
 * $W(n)=9W(n/3)+n^2$
-.  
-.
-. 
-.  
-. 
-.  
-.  
-.  
-.
+
+    $O(n^2 \log n)$ - this is a balanced case since $\log_3(9) = 2$, which equals the exponent of $n$ in the non-recursive term - for each level, the work is $n^2$, and there are $\log_3(n)$ levels - the total work is $n^2 \cdot \log_3(n) = O(n^2 \log n)$
+
 
 * $W(n)=8W(n/2)+n^3$
-.  
-.
-.  
-.  
-.  
-.  
-. 
-.  
-. 
+
+    $O(n^3 \log n)$ - this is a balanced case since $\log_2(8) = 3$, which equals the exponent of $n$ in the non-recursive term - for each level, the work is $n^3$, and there are $\log_2(n)$ levels - the total work is $n^3 \cdot \log_2(n) = O(n^3 \log n)$
 
 
 * $W(n)=49W(n/25)+n^{3/2}\log n$
-.  
-.  
-. 
-.  
-. 
-.  
-.  
-.  
+
+    $O(n^{3/2} \log n)$ - this is a leaf-dominated case since $\log_{25}(49) \approx 1.21 < 1.5$ - the non-recursive work $n^{3/2} \log n$ grows faster than the recursive work $n^{\log_{25}(49)}$ - since the non-recursive work occurs at every level and there are $\log_{25}(n)$ levels, the total work is $O(n^{3/2} \log n)$
+
 
 * $W(n)=W(n-1)+2$
-.  
-.  
-. 
-.  
-. 
-.  
-.  
-.  
+
+    $O(n)$ - this is a linear recurrence where we reduce the problem size by 1 at each step and do constant work - expanding: $W(n) = 2 + 2 + \ldots + 2$ (n times) = $2n = O(n)$
+
 
 * $W(n)= W(n-1)+n^c$, with $c\geq 1$
-.  
-.  
-.  
-.  
-.  
-. 
-.  
-. 
+
+    $O(n^{c+1})$ - this is a linear recurrence with polynomial work - expanding: $W(n) = n^c + (n-1)^c + (n-2)^c + \ldots + 1^c$ - since $c \geq 1$, this sum is dominated by the largest term $n^c$, and there are $n$ terms, so the total is $O(n \cdot n^c) = O(n^{c+1})$
+
 
 * $W(n)=W(\sqrt{n})+1$
-.  
-.  
-.  
-.  
-.  
-. 
-. 
+
+    $O(\log \log n)$ - this recurrence reduces $n$ by taking its square root at each step - the recursion stops when $n$ becomes a constant ($\leq 2$) - the number of levels is $\log_2(\log_2(n)) = \log \log n$ - since we do constant work (1) at each level, the total work is $O(\log \log n)$
 
 
 ## Part 2. Algorithm Comparison
@@ -115,7 +68,7 @@ Suppose that for a given task you are choosing between the following three algor
       subproblem, and then combining the solutions in linear time.
     
   * Algorithm $\mathcal{B}$ solves problems of size $n$ by
-      recursively solving two subproblems of size $n-1$ and then
+      recursively solving two subproblems of size $◊n-1$ and then
       combining the solutions in constant time.
     
   * Algorithm $\mathcal{C}$ solves problems of size $n$ by dividing
@@ -126,13 +79,13 @@ Suppose that for a given task you are choosing between the following three algor
     What are the asymptotic running times of each of these algorithms?
     Which algorithm would you choose?
 
+**Algorithm A:** $W(n) = 5W(n/2) + n$ - summation gives us $n^{\log_2(5)}$ - this is root-dominated since $\log_2(5) \approx 2.32 > 1$ - running time: $O(n^{\log_2(5)}) \approx O(n^{2.32})$
 
-.  
-.  
-.  
-.  
-. 
-. 
+**Algorithm B:** $W(n) = 2W(n-1) + 1$ - for this call, every time we multiply n by 2, and end up getting a geometric growth - running time: $O(2^n)$
+
+**Algorithm C:** $W(n) = 9W(n/3) + n^2$ - this recursive portion gives us $n^{\log_3(9)}$ or $n^2$, which is equal to the non-recursive work - so, the total work is $n^2$ at each level - running time: $O(n^2 \log n)$
+
+I would choose **Algorithm C** because it has the best asymptotic running time $O(n^2 \log n)$, which is much better than the exponential Algorithm B and better than Algorithm A's $O(n^{2.32})$.
 
 
 
@@ -160,10 +113,9 @@ Below, we'll solve this problem three different ways, using iterate, scan, and d
 
 **3b.** What are the recurrences for the Work and Span of this solution? What are their Big Oh solutions?
 
-**enter answer here**
+**Work:** $W(n) = W(n-1) + 1$ - this is a linear recurrence where we process one element at a time - the `parens_update` function does constant work $O(1)$ for each element - solution: $O(n)$
 
-.  
-. 
+**Span:** $S(n) = S(n-1) + 1$ - since there's no parallelism in the iterative solution, span equals work - each element must be processed sequentially - solution: $O(n)$
 
 
 
@@ -176,12 +128,12 @@ Below, we'll solve this problem three different ways, using iterate, scan, and d
 
 **3d.** Assume that any `map`s are done in parallel, and that we use the efficient implementation of `scan` from class. What are the recurrences for the Work and Span of this solution? 
 
-**enter answer here**
+**Work:** $W(n) = 2W(n/2) + O(1)$ - if map is done in parallel and we use the efficient scan, the work for those two calls are both $O(n)$ - the work portion would have a recurrence of $W(n) = 2W(n/2) + 1$ because we basically split the list in half each time and do constant work - total work: $O(n)$
 
-.  
-.  
+**Span:** $S(n) = S(n/2) + O(1)$ - for span, the recurrence would be $S(n) = S(n/2) + 1$ since we do the same thing as the work but only account for one of the longest dependencies - total span: $O(\log n)$
 
 
+   
 
 
 **3e. divide and conquer solution** Implement `parens_match_dc_helper`, a divide and conquer solution to the problem. A key observation is that we *cannot* simply solve each subproblem using the above solutions and combine the results. E.g., consider '((()))', which would be split into '(((' and ')))', neither of which is matched. Yet, the whole input is matched. Instead, we'll have to keep track of two numbers: the number of unmatched right parentheses (R), and the number of unmatched left parentheses (L). `parens_match_dc_helper` returns a tuple (R,L). So, if the input is just '(', then `parens_match_dc_helper` returns (0,1), indicating that there is 1 unmatched left parens and 0 unmatched right parens. Analogously, if the input is just ')', then the result should be (1,0). The main difficulty is deciding how to merge the returned values for the two recursive calls. E.g., if (i,j) is the result for the left half of the list, and (k,l) is the output of the right half of the list, how can we compute the proper return value (R,L) using only i,j,k,l? Try a few example inputs to guide your solution, then test with `test_parens_match_dc_helper`.
@@ -197,10 +149,11 @@ Below, we'll solve this problem three different ways, using iterate, scan, and d
 
 **3f.** Assuming any recursive calls are done in parallel, what are the recurrences for the Work and Span of this solution? What are their Big Oh solutions?
 
-**enter answer here**
+**Answer:**
 
-.  
-. 
+**Work:** $W(n) = 2W(n/2) + O(1)$ - the work would be $W(n) = 2W(n/2) + 1$, since we recursively split the list into two halves and then combine - this leads to $O(n)$
+
+**Span:** $S(n) = S(n/2) + O(1)$ - for span, it is similar but we only take one side into consideration, so $S(n) = S(n/2) + 1$ - solution: $O(\log n)$
 
 
  
